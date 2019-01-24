@@ -1,19 +1,37 @@
 import * as React from 'react';
 import './App.css';
 
-import logo from './logo.svg';
+import Button from '@material-ui/core/Button';
+import axios from 'axios'
 
-class App extends React.Component {
+interface IProps {
+  name?: string,
+}
+interface IState {
+  name: string
+}
+
+class App extends React.Component<IProps, IState> {
+
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      name: '',
+    };
+  }
+
+  public getUserList() {
+    const url = "https://cafexvl7id.execute-api.us-east-1.amazonaws.com/default/testFunction"
+    axios.get(url).then(result => {
+      this.setState({name: result.data.items[0].name})
+    })
+  }
+
   public render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
+        <Button variant="contained" color="primary" onClick={this.getUserList}>わーい</Button>
+        <div>{this.state.name}</div>
       </div>
     );
   }
